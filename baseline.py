@@ -15,6 +15,7 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_string('model_checkpoint_dir', './data/model', 'model dir')
 flags.DEFINE_string('root_path', './data/', 'data dir')
+flags.DEFINE_integer('epochs', 10, 'epochs')
 flags.DEFINE_integer('batch_size', 128, 'batch_size')
 flags.DEFINE_integer('embed_dim', 10, 'embed_dim')
 flags.DEFINE_float('learning_rate', 0.1, 'learning_rate')
@@ -223,7 +224,8 @@ def main(argv):
 
         if stage in ["online_train", "offline_train"]:
             # 训练 并评估
-            model.train()
+            for _ in range(FLAGS.epochs):
+                model.train()
             ids, logits, action_uauc = model.evaluate()
             eval_dict[action] = action_uauc
 

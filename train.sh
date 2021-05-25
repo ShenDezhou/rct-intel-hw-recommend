@@ -1,0 +1,1 @@
+python baseline.py online_train --batch_size=1024 --embed_dim=10 --learning_rate=1e-4
