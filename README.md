@@ -6,6 +6,17 @@
 
 队伍名*rct-intel*
 
+## ***训练+生成***
+`安装`
+  `pip install -r requirements.txt`
+
+`训练`：
+- 训练在线模型：python baseline.py online_train
+
+`生成`：
+- 生成提交文件：python baseline.py submit  （生成data/submit/submit_${timestamp}.csv）
+
+
 ## **1. 环境配置**
 
 - pandas>=1.0.5
