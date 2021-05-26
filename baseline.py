@@ -226,6 +226,8 @@ def main(argv):
             # 训练 并评估
             for _ in range(FLAGS.epochs):
                 model.train()
+                # remove event which can be very large
+                os.system('find . -iname event* -print -delete')
             ids, logits, action_uauc = model.evaluate()
             eval_dict[action] = action_uauc
 
