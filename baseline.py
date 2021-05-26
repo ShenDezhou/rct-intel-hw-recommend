@@ -35,8 +35,8 @@ class WideAndDeep(object):
         :param action: String. Including "read_comment"/"like"/"click_avatar"/"favorite"/"forward"/"comment"/"follow"
         """
         super(WideAndDeep, self).__init__()
-        self.num_epochs_dict = {"read_comment": 1, "like": 1, "click_avatar": 1, "favorite": 1, "forward": 1,
-                                "comment": 1, "follow": 1}
+        self.num_epochs_dict = {"read_comment": FLAGS.epochs, "like": FLAGS.epochs, "click_avatar": FLAGS.epochs, "favorite": FLAGS.epochs, "forward": FLAGS.epochs,
+                                "comment": FLAGS.epochs, "follow": FLAGS.epochs}
         self.estimator = None
         self.linear_feature_columns = linear_feature_columns
         self.dnn_feature_columns = dnn_feature_columns
@@ -224,10 +224,9 @@ def main(argv):
 
         if stage in ["online_train", "offline_train"]:
             # 训练 并评估
-            for _ in range(FLAGS.epochs):
-                model.train()
-                # remove event which can be very large
-                os.system('find data/model -iname event* -print -delete')
+            model.train()
+            # remove event which can be very large
+            os.system('find data/model -iname event* -print -delete')
             ids, logits, action_uauc = model.evaluate()
             eval_dict[action] = action_uauc
 
