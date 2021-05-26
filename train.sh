@@ -1,1 +1,1 @@
-TF_CPP_MIN_LOG_LEVEL=3 python baseline.py online_train --epochs=1000 --batch_size=1024 --embed_dim=10000 --learning_rate=1e-4
+TF_CPP_MIN_LOG_LEVEL=3 python baseline.py online_train --epochs=10 --batch_size=1024 --embed_dim=10 --learning_rate=1e-2
