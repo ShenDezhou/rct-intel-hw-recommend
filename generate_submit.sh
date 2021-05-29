@@ -1,1 +1,1 @@
-python baseline.py submit
+python baseline.py submit --embed_dim=10
