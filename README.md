@@ -4,7 +4,20 @@
 
 本次比赛以多个行为预测结果的加权uAUC值进行评分。大赛官方网站：https://algo.weixin.qq.com/
 
-队伍名*rct-intel*
+队伍名*rct-intel-hw*
+
+## ***数据集类别***
+数据集中类别样本是不均衡的，
+
+经统计基线数据集中的各数据样本中正样本比例占比如下：
+ACTION | Pos ratio
+-------|----------
+forward |  0.0335
+read_comment | 0.156
+like | 0.112
+click_avatar | 0.0362
+
+
 
 ## ***训练+生成***
 `安装`
