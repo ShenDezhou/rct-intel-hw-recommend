@@ -100,6 +100,7 @@ class AFTLocal(nn.Module):
         self.max_seqlen = max_seqlen
         self.s = s
         nn.init.xavier_uniform_(self.wbias)
+        self.device = device
 
     def forward(self, x):
         B, T, _ = x.shape
@@ -109,7 +110,7 @@ class AFTLocal(nn.Module):
         self.wbias = nn.Parameter(torch.Tensor([
             [self.wbias[i][j] if math.fabs(i - j) < self.s else 0 for j in range(self.max_seqlen)]
             for i in range(self.max_seqlen)
-        ]))
+        ]).to(self.device))
         temp_wbias = self.wbias[:T, :T].unsqueeze(0)  # sequences can still be variable length
 
         '''
