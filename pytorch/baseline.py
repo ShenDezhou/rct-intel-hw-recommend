@@ -11,7 +11,7 @@ from deepctr_torch.inputs import SparseFeat, DenseFeat, get_feature_names
 from deepctr_torch.models.deepfm import *
 from deepctr_torch.models.xdeepfm import *
 from deepctr_torch.models.basemodel import *
-from .aft_pytorch import *
+from aft_pytorch import *
 
 # 存储数据的根目录
 ROOT_PATH = "../data"
