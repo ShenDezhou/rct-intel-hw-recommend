@@ -438,8 +438,8 @@ if __name__ == "__main__":
         #                   cin_layer_size=(256, 128, 128, 64, 64, 32),
         #                    task='binary',
         #                    l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
-
-        model.compile("adagrad", "binary_crossentropy", metrics=["binary_crossentropy", "auc"])
+        # baseline opt = adagrad
+        model.compile(optimizer="AdamW", loss="binary_crossentropy", metrics=["binary_crossentropy", "auc"])
 
         history = model.fit(train_model_input, train[target].values, batch_size=512, epochs=5, verbose=1,
                             validation_split=0.2)
