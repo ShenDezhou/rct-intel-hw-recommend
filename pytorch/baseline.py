@@ -433,8 +433,8 @@ if __name__ == "__main__":
         #                task='binary',
         #                l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
         model = MyxDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
-                          dnn_hidden_units=(256, 256, 8),
-                          cin_layer_size=(256, 128, 8),
+                          dnn_hidden_units=(256, 256, 32),
+                          cin_layer_size=(256, 128, 32),
                            task='binary',
                            l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
 
