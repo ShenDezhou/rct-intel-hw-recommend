@@ -313,7 +313,7 @@ class MyxDeepFM(BaseModel):
                  l2_reg_embedding=0.00001, l2_reg_dnn=0, l2_reg_cin=0, init_std=0.0001, seed=1024, dnn_dropout=0,
                  dnn_activation='relu', dnn_use_bn=False, task='binary', device='cpu', gpus=None):
 
-        super(MyDeepFM, self).__init__(linear_feature_columns, dnn_feature_columns, l2_reg_linear=l2_reg_linear,
+        super(MyxDeepFM, self).__init__(linear_feature_columns, dnn_feature_columns, l2_reg_linear=l2_reg_linear,
                                       l2_reg_embedding=l2_reg_embedding, init_std=init_std, seed=seed, task=task,
                                       device=device, gpus=gpus)
         self.dnn_hidden_units = dnn_hidden_units
