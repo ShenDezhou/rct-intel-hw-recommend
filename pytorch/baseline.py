@@ -425,22 +425,23 @@ if __name__ == "__main__":
             device = 'cuda:0'
 
         # score=0.64
-        # model = MyDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
-        #                   task='binary',
-        #                   l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
-        #
+        model = MyDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
+                          task='binary',
+                          l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
+        # score=0.6346
         # model = MyxDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
         #                task='binary',
         #                l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
-        model = MyxDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
-                          dnn_hidden_units=(256, 256, 128, 128, 64, 64, 32),
-                          cin_layer_size=(256, 128, 128, 64, 64, 32),
-                           task='binary',
-                           l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
+        # score = 0.62
+        # model = MyxDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
+        #                   dnn_hidden_units=(256, 256, 128, 128, 64, 64, 32),
+        #                   cin_layer_size=(256, 128, 128, 64, 64, 32),
+        #                    task='binary',
+        #                    l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
 
         model.compile("adagrad", "binary_crossentropy", metrics=["binary_crossentropy", "auc"])
 
-        history = model.fit(train_model_input, train[target].values, batch_size=512, epochs=10, verbose=1,
+        history = model.fit(train_model_input, train[target].values, batch_size=512, epochs=5, verbose=1,
                             validation_split=0.2)
         pred_ans = model.predict(test_model_input, 128)
         submit[action] = pred_ans
