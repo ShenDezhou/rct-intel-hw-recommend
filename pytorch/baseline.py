@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import torch
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
+from torch.optim import AdamW
 from tqdm import tqdm
 from deepctr_torch.inputs import SparseFeat, DenseFeat, get_feature_names
 from deepctr_torch.models.deepfm import *
@@ -439,7 +440,21 @@ if __name__ == "__main__":
         #                    task='binary',
         #                    l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
         # baseline opt = adagrad, loss =binary_crossentropy
-        model.compile(optimizer="AdamW", loss="hinge_embedding_loss", metrics=["hinge_embedding_loss", "auc"])
+        no_decay = ['bias', 'gamma', 'beta']
+        optimizer_parameters = [
+            {'params': [p for n, p in model.named_parameters()
+                        if not any(nd in n for nd in no_decay)],
+             'weight_decay_rate': 0.01},
+            {'params': [p for n, p in model.named_parameters()
+                        if any(nd in n for nd in no_decay)],
+             'weight_decay_rate': 0.0}]
+        optimizer = AdamW(
+            optimizer_parameters,
+            lr=1e-4,
+            betas=(0.9, 0.999),
+            weight_decay=1e-8,
+            correct_bias=False)
+        model.compile(optimizer=optimizer, loss="hinge_embedding_loss", metrics=["hinge_embedding_loss", "auc"])
 
         history = model.fit(train_model_input, train[target].values, batch_size=512, epochs=5, verbose=1,
                             validation_split=0.2)
