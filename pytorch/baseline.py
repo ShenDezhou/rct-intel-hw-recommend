@@ -3,7 +3,8 @@ import numpy as np
 import pandas as pd
 import torch
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
-from torch.optim import AdamW
+from transformers.optimization import (
+    AdamW, get_linear_schedule_with_warmup, get_constant_schedule)
 from tqdm import tqdm
 from deepctr_torch.inputs import SparseFeat, DenseFeat, get_feature_names
 from deepctr_torch.models.deepfm import *
