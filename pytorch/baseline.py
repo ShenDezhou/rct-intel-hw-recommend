@@ -456,7 +456,7 @@ if __name__ == "__main__":
             betas=(0.9, 0.999),
             weight_decay=1e-8,
             correct_bias=False)
-        model.compile(optimizer=optimizer, loss="binary_crossentropy", metrics=["binary_crossentropy", "auc"])
+        model.compile(optimizer=optimizer, loss=torch.nn.functional.hinge_embedding_loss, metrics=["binary_crossentropy", "auc"])
 
         history = model.fit(train_model_input, train[target].values, batch_size=512, epochs=5, verbose=1,
                             validation_split=0.2)
