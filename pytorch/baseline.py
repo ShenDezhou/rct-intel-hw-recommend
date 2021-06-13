@@ -332,7 +332,7 @@ if __name__ == "__main__":
 
         model = MyDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
                        task='binary',
-                       l2_reg_embedding=1e-1, device=device)
+                       l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
 
         model.compile("adagrad", "binary_crossentropy", metrics=["binary_crossentropy", "auc"])
 
