@@ -312,17 +312,17 @@ class MyAFTDeepFM(MyBaseModel):
             max_seqlen=len(sparse_feature_columns),
             dim=4, # Embedding 4
             hidden_dim=aft_hidden_units
-        )
+        ).to(device)
         self.aftsimple = AFTSimple(
             max_seqlen=len(sparse_feature_columns),
             dim=4,  # Embedding 4
             hidden_dim=aft_hidden_units
-        )
+        ).to(device)
         self.aftlocal = AFTLocal(
             max_seqlen=len(sparse_feature_columns),
             dim=4,  # Embedding 4
             hidden_dim=aft_hidden_units
-        )
+        ).to(device)
         self.aft_linear = nn.Linear(
             len(sparse_feature_columns) * 4 * 3, 1, bias=False).to(device)
 
@@ -440,7 +440,7 @@ if __name__ == "__main__":
 
         model = MyAFTDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
                          task='binary',
-                         l2_reg_embedding=1e-1, device=device)
+                         l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
         # score=0.64
         # model = MyDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
         #                   task='binary',
