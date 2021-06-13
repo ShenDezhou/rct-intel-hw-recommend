@@ -458,7 +458,7 @@ if __name__ == "__main__":
             correct_bias=False)
         model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['binary_crossentropy', "auc"])
 
-        history = model.fit(train_model_input, train[target].values, batch_size=512, epochs=10, verbose=1,
+        history = model.fit(train_model_input, train[target].values, batch_size=512, epochs=20, verbose=1,
                             validation_split=0.2)
         pred_ans = model.predict(test_model_input, 128)
         submit[action] = pred_ans
