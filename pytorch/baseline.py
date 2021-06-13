@@ -452,7 +452,7 @@ if __name__ == "__main__":
              'weight_decay_rate': 0.0}]
         optimizer = AdamW(
             optimizer_parameters,
-            lr=1e-2,
+            lr=1e-3,
             betas=(0.9, 0.999),
             weight_decay=1e-8,
             correct_bias=False)
