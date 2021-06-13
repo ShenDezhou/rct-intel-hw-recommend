@@ -452,9 +452,9 @@ if __name__ == "__main__":
              'weight_decay_rate': 0.0}]
         optimizer = AdamW(
             optimizer_parameters,
-            lr=4e-3,
+            lr=1e-3,
             betas=(0.9, 0.999),
-            weight_decay=1e-8,
+            weight_decay=1e-4,
             correct_bias=False)
         model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['binary_crossentropy', "auc"])
 
