@@ -11,7 +11,7 @@ from deepctr_torch.inputs import SparseFeat, DenseFeat, get_feature_names
 from deepctr_torch.models.deepfm import *
 from deepctr_torch.models.xdeepfm import *
 from deepctr_torch.models.basemodel import *
-from aft_pytorch import *
+from .aft_pytorch import *
 
 # 存储数据的根目录
 ROOT_PATH = "../data"
@@ -311,18 +311,21 @@ class MyAFTDeepFM(MyBaseModel):
         self.aftfull = AFTFull(
             max_seqlen=len(sparse_feature_columns),
             dim=4, # Embedding 4
-            hidden_dim=aft_hidden_units
-        ).to(device)
+            hidden_dim=aft_hidden_units,
+            device=device
+        )
         self.aftsimple = AFTSimple(
             max_seqlen=len(sparse_feature_columns),
             dim=4,  # Embedding 4
-            hidden_dim=aft_hidden_units
-        ).to(device)
+            hidden_dim=aft_hidden_units,
+            device = device
+        )
         self.aftlocal = AFTLocal(
             max_seqlen=len(sparse_feature_columns),
             dim=4,  # Embedding 4
-            hidden_dim=aft_hidden_units
-        ).to(device)
+            hidden_dim=aft_hidden_units,
+            device = device
+        )
         self.aft_linear = nn.Linear(
             len(sparse_feature_columns) * 4 * 3, 1, bias=False).to(device)
 
