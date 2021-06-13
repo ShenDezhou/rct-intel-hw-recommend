@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import torch
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
+from torch.nn import HingeEmbeddingLoss
 from transformers.optimization import (
     AdamW, get_linear_schedule_with_warmup, get_constant_schedule)
 from tqdm import tqdm
@@ -455,7 +456,8 @@ if __name__ == "__main__":
             betas=(0.9, 0.999),
             weight_decay=1e-8,
             correct_bias=False)
-        model.compile(optimizer=optimizer, loss="hinge_embedding_loss", metrics=["hinge_embedding_loss", "auc"])
+        loss = HingeEmbeddingLoss()
+        model.compile(optimizer=optimizer, loss=loss, metrics=["binary_crossentropy", "auc"])
 
         history = model.fit(train_model_input, train[target].values, batch_size=512, epochs=5, verbose=1,
                             validation_split=0.2)
