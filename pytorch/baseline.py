@@ -447,4 +447,4 @@ if __name__ == "__main__":
         submit[action] = pred_ans
         torch.cuda.empty_cache()
     # 保存提交文件
-    submit.to_csv("./submit_base_xdeepfm.csv", index=False)
+    submit.to_csv("./submit_base_deepfm.csv", index=False)
