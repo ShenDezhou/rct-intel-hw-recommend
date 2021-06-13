@@ -19,7 +19,10 @@ class AFTFull(nn.Module):
         self.to_k = nn.Linear(dim, hidden_dim).to(device)
         self.to_v = nn.Linear(dim, hidden_dim).to(device)
         self.project = nn.Linear(hidden_dim, dim).to(device)
-        self.wbias = nn.Parameter(torch.Tensor(max_seqlen, max_seqlen))
+        if torch.cuda.is_available():
+            self.wbias = nn.Parameter(torch.cuda.Tensor(max_seqlen, max_seqlen))
+        else:
+            self.wbias = nn.Parameter(torch.Tensor(max_seqlen, max_seqlen))
         nn.init.xavier_uniform_(self.wbias)
 
     def forward(self, x):
@@ -96,7 +99,10 @@ class AFTLocal(nn.Module):
         self.to_k = nn.Linear(dim, hidden_dim).to(device)
         self.to_v = nn.Linear(dim, hidden_dim).to(device)
         self.project = nn.Linear(hidden_dim, dim).to(device)
-        self.wbias = nn.Parameter(torch.Tensor(max_seqlen, max_seqlen))
+        if torch.cuda.is_available():
+            self.wbias = nn.Parameter(torch.cuda.Tensor(max_seqlen, max_seqlen))
+        else:
+            self.wbias = nn.Parameter(torch.Tensor(max_seqlen, max_seqlen))
         self.max_seqlen = max_seqlen
         self.s = s
         nn.init.xavier_uniform_(self.wbias)
