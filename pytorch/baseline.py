@@ -305,6 +305,7 @@ class MyAFTDeepFM(MyBaseModel):
         if use_fm:
             self.fm = FM()
 
+        # AFT layers
         sparse_feature_columns = list(
             filter(lambda x: isinstance(x, SparseFeat), dnn_feature_columns)) if len(dnn_feature_columns) else []
         aft_hidden_units = dnn_hidden_units[0]
@@ -320,12 +321,6 @@ class MyAFTDeepFM(MyBaseModel):
             hidden_dim=aft_hidden_units,
             device = device
         )
-        # self.aftlocal = AFTLocal(
-        #     max_seqlen=len(sparse_feature_columns),
-        #     dim=4,  # Embedding 4
-        #     hidden_dim=aft_hidden_units,
-        #     device = device
-        # )
         self.aft_linear = nn.Linear(
             len(sparse_feature_columns) * 4 * 2, 1, bias=False).to(device)
 
@@ -351,30 +346,12 @@ class MyAFTDeepFM(MyBaseModel):
             fm_input = torch.cat(sparse_embedding_list, dim=1)
             logit += self.fm(fm_input)
 
-        # dnn_input = combined_dnn_input(
-        #     sparse_embedding_list, dense_value_list)
-        # dnn_input = dnn_input.view(dnn_input.shape()[-1], 1, dnn_input.shape()[-1]
+        # AFT layers
         dnn_input = torch.cat(sparse_embedding_list, dim=1)
         dnn_input_x = dnn_input
-        # dnn_input_y = dnn_input
-        dnn_input = self.aftfull(dnn_input)
-        dnn_input = self.aftfull(dnn_input)
-        dnn_input = self.aftfull(dnn_input)
-        dnn_input = self.aftfull(dnn_input)
-        dnn_input = self.aftfull(dnn_input)
-        dnn_input = self.aftfull(dnn_input)
-        dnn_input_x = self.aftsimple(dnn_input_x)
-        dnn_input_x = self.aftsimple(dnn_input_x)
-        dnn_input_x = self.aftsimple(dnn_input_x)
-        dnn_input_x = self.aftsimple(dnn_input_x)
-        dnn_input_x = self.aftsimple(dnn_input_x)
-        dnn_input_x = self.aftsimple(dnn_input_x)
-        # dnn_input_y = self.aftlocal(dnn_input_y)
-        # dnn_input_y = self.aftlocal(dnn_input_y)
-        # dnn_input_y = self.aftlocal(dnn_input_y)
-        # dnn_input_y = self.aftlocal(dnn_input_y)
-        # dnn_input_y = self.aftlocal(dnn_input_y)
-        # dnn_input_y = self.aftlocal(dnn_input_y)
+        for _ in range(24):
+            dnn_input = self.aftfull(dnn_input)
+            dnn_input_x = self.aftsimple(dnn_input_x)
 
         aft_input = torch.cat([dnn_input, dnn_input_x], dim=-1)
         aft_input = aft_input.view((aft_input.shape[0], -1))
