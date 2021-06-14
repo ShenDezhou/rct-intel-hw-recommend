@@ -308,19 +308,24 @@ class MyAFTDeepFM(MyBaseModel):
         # AFT layers
         sparse_feature_columns = list(
             filter(lambda x: isinstance(x, SparseFeat), dnn_feature_columns)) if len(dnn_feature_columns) else []
-        aft_hidden_units = dnn_hidden_units[0]
-        self.aftfull = AFTFull(
-            max_seqlen=len(sparse_feature_columns),
-            dim=4, # Embedding 4
-            hidden_dim=aft_hidden_units,
-            device=device
-        )
-        self.aftsimple = AFTSimple(
-            max_seqlen=len(sparse_feature_columns),
-            dim=4,  # Embedding 4
-            hidden_dim=aft_hidden_units,
-            device = device
-        )
+        # aft_hidden_units = dnn_hidden_units[0]
+        # self.aftfull = AFTFull(
+        #     max_seqlen=len(sparse_feature_columns),
+        #     dim=4, # Embedding 4
+        #     hidden_dim=aft_hidden_units,
+        #     device=device
+        # )
+        self.aftfulls = nn.ModuleList(
+            [self.make_layer(AFTFull, device) for i in range(6)])
+        # self.aftsimple = AFTSimple(
+        #     max_seqlen=len(sparse_feature_columns),
+        #     dim=4,  # Embedding 4
+        #     hidden_dim=aft_hidden_units,
+        #     device = device
+        # )
+        self.aftsimples = nn.ModuleList(
+            [self.make_layer(AFTSimple, device) for i in range(6)])
+
         self.aft_linear = nn.Linear(
             len(sparse_feature_columns) * 4 * 2, 1, bias=False).to(device)
 
@@ -336,6 +341,14 @@ class MyAFTDeepFM(MyBaseModel):
             self.add_regularization_weight(self.dnn_linear.weight, l2=l2_reg_dnn)
         self.to(device)
 
+    def make_layer(self, module, device):
+        return module(
+            max_seqlen=5,
+            dim=4, # Embedding 4
+            hidden_dim=512,
+            device=device
+        )
+
     def forward(self, X):
 
         sparse_embedding_list, dense_value_list = self.input_from_feature_columns(X, self.dnn_feature_columns,
@@ -349,9 +362,10 @@ class MyAFTDeepFM(MyBaseModel):
         # AFT layers
         dnn_input = torch.cat(sparse_embedding_list, dim=1)
         dnn_input_x = dnn_input
-        for _ in range(24):
-            dnn_input = self.aftfull(dnn_input)
-            dnn_input_x = self.aftsimple(dnn_input_x)
+
+        for i in range(6):
+            dnn_input = self.aftfulls[i](dnn_input)
+            dnn_input_x = self.aftsimples[i](dnn_input_x)
 
         aft_input = torch.cat([dnn_input, dnn_input_x], dim=-1)
         aft_input = aft_input.view((aft_input.shape[0], -1))
@@ -418,10 +432,11 @@ if __name__ == "__main__":
             print('cuda ready...')
             device = 'cuda:0'
 
+        # score=0.6430
         model = MyAFTDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
                          task='binary',
-                         l2_reg_embedding=1e-1, dnn_dropout=0.5, device=device, gpus=[0, 1])
-        # score=0.6431
+                         l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
+        # score=0.6431 nn_dropout=0.5  score=0.6430
         # model = MyAFTDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
         #                  task='binary',
         #                  l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
