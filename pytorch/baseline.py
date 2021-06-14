@@ -305,6 +305,7 @@ class MyAFTDeepFM(MyBaseModel):
         if use_fm:
             self.fm = FM()
 
+        self.layers_count = 32
         # AFT layers
         sparse_feature_columns = list(
             filter(lambda x: isinstance(x, SparseFeat), dnn_feature_columns)) if len(dnn_feature_columns) else []
@@ -316,7 +317,7 @@ class MyAFTDeepFM(MyBaseModel):
         #     device=device
         # )
         self.aftfulls = nn.ModuleList(
-            [self.make_layer(AFTFull, device) for i in range(6)])
+            [self.make_layer(AFTFull, device) for i in range(self.layers_count)])
         # self.aftsimple = AFTSimple(
         #     max_seqlen=len(sparse_feature_columns),
         #     dim=4,  # Embedding 4
@@ -363,7 +364,7 @@ class MyAFTDeepFM(MyBaseModel):
         dnn_input = torch.cat(sparse_embedding_list, dim=1)
         dnn_input_x = dnn_input
 
-        for i in range(6):
+        for i in range(self.layers_count):
             dnn_input = self.aftfulls[i](dnn_input)
             dnn_input_x = self.aftsimples[i](dnn_input_x)
 
