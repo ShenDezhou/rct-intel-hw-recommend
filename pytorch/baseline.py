@@ -325,7 +325,7 @@ class MyAFTDeepFM(MyBaseModel):
         #     device = device
         # )
         self.aftsimples = nn.ModuleList(
-            [self.make_layer(AFTSimple, device) for i in range(6)])
+            [self.make_layer(AFTSimple, device) for i in range(self.layers_count)])
 
         self.aft_linear = nn.Linear(
             len(sparse_feature_columns) * 4 * 2, 1, bias=False).to(device)
