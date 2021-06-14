@@ -418,10 +418,13 @@ if __name__ == "__main__":
             print('cuda ready...')
             device = 'cuda:0'
 
-        # score=0.6431
         model = MyAFTDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
                          task='binary',
-                         l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
+                         l2_reg_embedding=1e-1, dnn_dropout=0.5, device=device, gpus=[0, 1])
+        # score=0.6431
+        # model = MyAFTDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
+        #                  task='binary',
+        #                  l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
         # score=0.64
         # model = MyDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
         #                   task='binary',
