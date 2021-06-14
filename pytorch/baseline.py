@@ -305,7 +305,7 @@ class MyAFTDeepFM(MyBaseModel):
         if use_fm:
             self.fm = FM()
 
-        self.layers_count = 32
+        self.layers_count = 8
         # AFT layers
         sparse_feature_columns = list(
             filter(lambda x: isinstance(x, SparseFeat), dnn_feature_columns)) if len(dnn_feature_columns) else []
