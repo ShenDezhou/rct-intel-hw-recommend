@@ -305,7 +305,7 @@ class MyAFTDeepFM(MyBaseModel):
         if use_fm:
             self.fm = FM()
 
-        self.layers_count = 6
+        self.layers_count = 12
         # AFT layers
         sparse_feature_columns = list(
             filter(lambda x: isinstance(x, SparseFeat), dnn_feature_columns)) if len(dnn_feature_columns) else []
@@ -365,8 +365,16 @@ class MyAFTDeepFM(MyBaseModel):
         dnn_input_x = dnn_input
 
         for i in range(self.layers_count):
+            if i % 6 == 0:
+                dnn_input_p = dnn_input
+                dnn_input_x_p = dnn_input_x
+
             dnn_input = self.aftfulls[i](dnn_input)
             dnn_input_x = self.aftsimples[i](dnn_input_x)
+
+            if i % 6 == 0:
+                dnn_input += dnn_input_p
+                dnn_input_x_p += dnn_input_x_p
 
         aft_input = torch.cat([dnn_input, dnn_input_x], dim=-1)
         aft_input = aft_input.view((aft_input.shape[0], -1))
