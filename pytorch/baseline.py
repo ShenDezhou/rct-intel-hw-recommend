@@ -366,8 +366,8 @@ class MyAFTDeepFM(MyBaseModel):
 
         for i in range(self.layers_count):
             if i % 6 == 0:
-                dnn_input_p = dnn_input
-                dnn_input_x_p = dnn_input_x
+                dnn_input_p = dnn_input.clone().detach()
+                dnn_input_x_p = dnn_input_x.clone().detach()
 
             dnn_input = self.aftfulls[i](dnn_input)
             dnn_input_x = self.aftsimples[i](dnn_input_x)
