@@ -305,7 +305,7 @@ class MyAFTDeepFM(MyBaseModel):
         if use_fm:
             self.fm = FM()
 
-        self.layers_count = 6
+        self.layers_count = 24
         # AFT layers
         sparse_feature_columns = list(
             filter(lambda x: isinstance(x, SparseFeat), dnn_feature_columns)) if len(dnn_feature_columns) else []
@@ -346,7 +346,7 @@ class MyAFTDeepFM(MyBaseModel):
         return module(
             max_seqlen=5,
             dim=4, # Embedding 4
-            hidden_dim=768,
+            hidden_dim=256,
             device=device
         )
 
