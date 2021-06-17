@@ -305,7 +305,7 @@ class MyAFTDeepFM(MyBaseModel):
         if use_fm:
             self.fm = FM()
 
-        self.layers_count = 48
+        self.layers_count = 96
         # AFT layers
         sparse_feature_columns = list(
             filter(lambda x: isinstance(x, SparseFeat), dnn_feature_columns)) if len(dnn_feature_columns) else []
@@ -346,7 +346,7 @@ class MyAFTDeepFM(MyBaseModel):
         return module(
             max_seqlen=5,
             dim=4, # Embedding 4
-            hidden_dim=256,
+            hidden_dim=128,
             device=device
         )
 
@@ -365,14 +365,14 @@ class MyAFTDeepFM(MyBaseModel):
         dnn_input_x = dnn_input
 
         for i in range(self.layers_count):
-            if i % 6 == 0:
+            if i % 8 == 0:
                 dnn_input_p = dnn_input.clone().detach()
                 dnn_input_x_p = dnn_input_x.clone().detach()
 
             dnn_input = self.aftfulls[i](dnn_input)
             dnn_input_x = self.aftsimples[i](dnn_input_x)
 
-            if i % 6 == 0:
+            if i % 8 == 0:
                 dnn_input += dnn_input_p
                 dnn_input_x_p += dnn_input_x_p
 
@@ -480,7 +480,7 @@ if __name__ == "__main__":
             correct_bias=False)
         model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['binary_crossentropy', "auc"])
 
-        history = model.fit(train_model_input, train[target].values, batch_size=512, epochs=5, verbose=1,
+        history = model.fit(train_model_input, train[target].values, batch_size=128, epochs=5, verbose=1,
                             validation_split=0.2)
         pred_ans = model.predict(test_model_input, 128)
         submit[action] = pred_ans
