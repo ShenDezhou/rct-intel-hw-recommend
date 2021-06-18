@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import torch
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
-from torch.nn import HingeEmbeddingLoss
 from transformers.optimization import (
     AdamW, get_linear_schedule_with_warmup, get_constant_schedule)
 from tqdm import tqdm
