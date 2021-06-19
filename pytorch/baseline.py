@@ -391,10 +391,11 @@ class MyAFTDeepFM(MyBaseModel):
 
         return y_pred
 
-
+import sys
 if __name__ == "__main__":
     submit = pd.read_csv(ROOT_PATH + '/test_data.csv')[['userid', 'feedid']]
-    for x in range(4):
+    start =  int(sys.argv[1])
+    for x in range(start, 4):
         for action in ACTION_LIST:
             USE_FEAT = ['userid', 'feedid', action] + FEA_FEED_LIST[1:]
             train = pd.read_csv(ROOT_PATH + f'/train_data_for_{action}.csv')[USE_FEAT]
