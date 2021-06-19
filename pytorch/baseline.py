@@ -345,7 +345,7 @@ class MyAFTDeepFM(MyBaseModel):
         return module(
             max_seqlen=5,
             dim=4, # Embedding 4
-            hidden_dim=256,
+            hidden_dim=192,
             device=device
         )
 
