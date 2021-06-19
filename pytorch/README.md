@@ -48,3 +48,7 @@ learning_rate: 0.1
 
 ## 7.相关文献
 Guo H, Tang R, Ye Y, et al. Deepfm: a factorization-machine based neural network for ctr prediction[J]. arXiv preprint arXiv:1703.04247, 2017.
+
+## 8.Colab 代码
+任何有Colab账号的人均可以训练和Evaluate.
+https://colab.research.google.com/drive/1QJz6aSWoe0WKa8XCjCWB8pGcBSBGX14e?usp=sharing
