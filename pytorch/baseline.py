@@ -378,7 +378,7 @@ class MyAFTDeepFM(MyBaseModel):
         aft_input = torch.cat([dnn_input, dnn_input_x], dim=-1)
         aft_input = aft_input.view((aft_input.shape[0], -1))
         aft_input = self.aft_linear(aft_input)
-        logit = torch.dot(logit,aft_input)
+        logit = torch.mm(logit,aft_input)
 
         if self.use_dnn:
             dnn_input = combined_dnn_input(
