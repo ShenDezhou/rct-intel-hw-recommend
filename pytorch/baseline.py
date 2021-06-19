@@ -345,7 +345,7 @@ class MyAFTDeepFM(MyBaseModel):
         return module(
             max_seqlen=5,
             dim=4, # Embedding 4
-            hidden_dim=192,
+            hidden_dim=128,
             device=device
         )
 
@@ -495,7 +495,7 @@ if __name__ == "__main__":
                  'weight_decay_rate': 0.0}]
             optimizer = AdamW(
                 optimizer_parameters,
-                lr=1e-3,
+                lr=1e-2,
                 betas=(0.9, 0.999),
                 weight_decay=1e-4,
                 correct_bias=False)
