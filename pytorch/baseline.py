@@ -361,6 +361,7 @@ class MyAFTDeepFM(MyBaseModel):
 
         # AFT layers
         dnn_input = torch.cat(sparse_embedding_list, dim=1)
+        dnn_input = torch.sigmoid(dnn_input)
         dnn_input_x = dnn_input
 
         for i in range(self.layers_count):
