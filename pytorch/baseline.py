@@ -499,13 +499,13 @@ if __name__ == "__main__":
                  'weight_decay_rate': 0.0}]
             optimizer = AdamW(
                 optimizer_parameters,
-                lr=1,
+                lr=1.2,
                 betas=(0.9, 0.999),
                 weight_decay=1e-4,
                 correct_bias=False)
             model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['binary_crossentropy', "auc"])
 
-            history = model.fit(train_model_input, train[target].values, batch_size=8096, epochs=5, verbose=1,
+            history = model.fit(train_model_input, train[target].values, batch_size=8096+2048, epochs=5, verbose=1,
                                 validation_split=0.2)
             pred_ans = model.predict(test_model_input, 128)
             submit[action] = pred_ans
