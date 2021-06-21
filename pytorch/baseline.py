@@ -377,7 +377,7 @@ class MyAFTDeepFM(MyBaseModel):
 
             if i % 4 == 0:
                 dnn_input += dnn_input_p
-                dnn_input_x_p += dnn_input_x_p
+                dnn_input_x += dnn_input_x_p
 
         aft_input = torch.cat([dnn_input, dnn_input_x], dim=-1)
         aft_input = aft_input.view((aft_input.shape[0], -1))
@@ -469,7 +469,7 @@ if __name__ == "__main__":
                                     use_fm=False,
                                     dnn_hidden_units=(),
                                     task='binary',
-                                    l2_reg_embedding=1e-1, device=device, gpus=[0])
+                                    l2_reg_embedding=1e-1, device=device, gpus=[0, 1])
             # score=0.6431 nn_dropout=0.5  score=0.6430
             # model = MyAFTDeepFM(linear_feature_columns=linear_feature_columns, dnn_feature_columns=dnn_feature_columns,
             #                  task='binary',
@@ -499,13 +499,13 @@ if __name__ == "__main__":
                  'weight_decay_rate': 0.0}]
             optimizer = AdamW(
                 optimizer_parameters,
-                lr=1,
+                lr=1e-1,
                 betas=(0.9, 0.999),
                 weight_decay=1e-4,
                 correct_bias=False)
             model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['binary_crossentropy', "auc"])
 
-            history = model.fit(train_model_input, train[target].values, batch_size=8096, epochs=5, verbose=1,
+            history = model.fit(train_model_input, train[target].values, batch_size=1024, epochs=5, verbose=1,
                                 validation_split=0.2)
             pred_ans = model.predict(test_model_input, 128)
             submit[action] = pred_ans
